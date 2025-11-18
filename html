@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodie - Discover the best food & drinks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #e23744;
+            --secondary: #ff7e8b;
+            --dark: #1f1f1f;
+            --light: #f8f8f8;
+            --gray: #a0a0a0;
+            --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: var(--light);
+            border-radius: 8px;
+            padding: 8px 15px;
+            width: 40%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            padding: 8px;
+            width: 100%;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-bar i {
+            color: var(--gray);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-login {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-signup {
+            background-color: var(--primary);
+            border: 1px solid var(--primary);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                        url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 5%;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .location-search {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .location-search input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .location-search button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Quick Filters */
+        .quick-filters {
+            padding: 40px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 28px;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .filters {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            min-width: 80px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .filter-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .filter-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--light);
+            box-shadow: var(--card-shadow);
+        }
+
+        .filter-icon i {
+            font-size: 24px;
+            color: var(--primary);
+        }
+
+        .filter-name {
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* Restaurants Section */
+        .restaurants {
+            padding: 40px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .restaurant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .restaurant-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .restaurant-image {
+            height: 180px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .restaurant-info {
+            padding: 15px;
+        }
+
+        .restaurant-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .restaurant-cuisine {
+            color: var(--gray);
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .restaurant-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        .rating {
+            background-color: #24963f;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .delivery-time, .cost {
+            color: var(--gray);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 50px 5% 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid #444;
+            max-width: 1400px;
+            margin: 30px auto 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .search-bar {
+                width: 35%;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+            }
+            
+            .search-bar {
+                order: 3;
+                width: 100%;
+                margin-top: 15px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .auth-buttons {
+                display: none;
+            }
+            
+            .hero {
+                padding: 60px 5%;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .location-search {
+                flex-direction: column;
+            }
+            
+            .location-search input, .location-search button {
+                width: 100%;
+            }
+            
+            .location-search button {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-utensils"></i>
+                <span>Foodie</span>
+            </div>
+            
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search for restaurants or food...">
+            </div>
+            
+            <nav class="nav-links">
+                <a href="#"><i class="fas fa-search"></i> Discover</a>
+                <a href="#"><i class="fas fa-heart"></i> Favorites</a>
+                <a href="#"><i class="fas fa-shopping-cart"></i> Cart</a>
+            </nav>
+            
+            <div class="auth-buttons">
+                <button class="btn btn-login">Log In</button>
+                <button class="btn btn-signup">Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Discover the best food & drinks</h1>
+        <p>Find the best restaurants, cafés, and bars in your city</p>
+        <div class="location-search">
+            <input type="text" placeholder="Enter your delivery location">
+            <button>Find Food</button>
+        </div>
+    </section>
+
+    <!-- Quick Filters -->
+    <section class="quick-filters">
+        <h2 class="section-title">Quick Filters</h2>
+        <div class="filters">
+            <div class="filter-item">
+                <div class="filter-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <span class="filter-name">Delivery</span>
+            </div>
+            <div class="filter-item">
+                <div class="filter-icon">
+                    <i class="fas fa-bread-slice"></i>
+                </div>
+                <span class="filter-name">Breakfast</span>
+            </div>
+            <div class="filter-item">
+                <div class="filter-icon">
+                    <i class="fas fa-pizza-slice"></i>
+                </div>
+                <span class="filter-name">Lunch</span>
+            </div>
+            <div class="filter-item">
+                <div class="filter-icon">
+                    <i class="fas fa-hamburger"></i>
+                </div>
+                <span class="filter-name">Dinner</span>
+            </div>
+            <div class="filter-item">
+                <div class="filter-icon">
+                    <i class="fas fa-mug-hot"></i>
+                </div>
+                <span class="filter-name">Cafés</span>
+            </div>
+            <div class="filter-item">
+                <div class="filter-icon">
+                    <i class="fas fa-cocktail"></i>
+                </div>
+                <span class="filter-name">Drinks</span>
+            </div>
+            <div class="filter-item">
+                <div class="filter-icon">
+                    <i class="fas fa-ice-cream"></i>
+                </div>
+                <span class="filter-name">Desserts</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Restaurants Section -->
+    <section class="restaurants">
+        <h2 class="section-title">Popular restaurants near you</h2>
+        <div class="restaurant-grid">
+            <!-- Restaurant 1 -->
+            <div class="restaurant-card">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                     alt="Restaurant" class="restaurant-image">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">The Gourmet Kitchen</h3>
+                    <p class="restaurant-cuisine">North Indian, Chinese, Italian</p>
+                    <div class="restaurant-details">
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <span>4.5</span>
+                        </div>
+                        <div class="delivery-time">35 mins</div>
+                        <div class="cost">₹400 for two</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Restaurant 2 -->
+            <div class="restaurant-card">
+                <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                     alt="Restaurant" class="restaurant-image">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">Spice Garden</h3>
+                    <p class="restaurant-cuisine">South Indian, Biryani</p>
+                    <div class="restaurant-details">
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <span>4.2</span>
+                        </div>
+                        <div class="delivery-time">25 mins</div>
+                        <div class="cost">₹350 for two</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Restaurant 3 -->
+            <div class="restaurant-card">
+                <img src="https://images.unsplash.com/photo-1559329007-40df8a9345d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" 
+                     alt="Restaurant" class="restaurant-image">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">Pizza Paradise</h3>
+                    <p class="restaurant-cuisine">Pizza, Pasta, Italian</p>
+                    <div class="restaurant-details">
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <span>4.7</span>
+                        </div>
+                        <div class="delivery-time">30 mins</div>
+                        <div class="cost">₹600 for two</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Restaurant 4 -->
+            <div class="restaurant-card">
+                <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1415&q=80" 
+                     alt="Restaurant" class="restaurant-image">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">Burger Junction</h3>
+                    <p class="restaurant-cuisine">Burgers, American, Fast Food</p>
+                    <div class="restaurant-details">
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <span>4.3</span>
+                        </div>
+                        <div class="delivery-time">20 mins</div>
+                        <div class="cost">₹500 for two</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Foodie</h3>
+                <p>Discover the best food & drinks in your city</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Team</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Contact</h3>
+                <ul>
+                    <li><a href="#">Help & Support</a></li>
+                    <li><a href="#">Partner with us</a></li>
+                    <li><a href="#">Ride with us</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2023 Foodie. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Firebase configuration (replace with your actual config)
+        const firebaseConfig = {
+            apiKey: "your-api-key",
+            authDomain: "your-project.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "your-app-id"
+        };
+
+        // Initialize Firebase (commented out as we don't have actual config)
+        // firebase.initializeApp(firebaseConfig);
+        
+        // Sample restaurant data (in a real app, this would come from Firebase)
+        const restaurants = [
+            {
+                name: "The Gourmet Kitchen",
+                cuisine: "North Indian, Chinese, Italian",
+                rating: 4.5,
+                deliveryTime: "35 mins",
+                cost: "₹400 for two",
+                image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+            },
+            {
+                name: "Spice Garden",
+                cuisine: "South Indian, Biryani",
+                rating: 4.2,
+                deliveryTime: "25 mins",
+                cost: "₹350 for two",
+                image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+            },
+            {
+                name: "Pizza Paradise",
+                cuisine: "Pizza, Pasta, Italian",
+                rating: 4.7,
+                deliveryTime: "30 mins",
+                cost: "₹600 for two",
+                image: "https://images.unsplash.com/photo-1559329007-40df8a9345d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
+            },
+            {
+                name: "Burger Junction",
+                cuisine: "Burgers, American, Fast Food",
+                rating: 4.3,
+                deliveryTime: "20 mins",
+                cost: "₹500 for two",
+                image: "https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1415&q=80"
+            }
+        ];
+
+        // In a real implementation, you would fetch restaurant data from Firebase
+        // For this demo, we're using the static data above
+
+        // Search functionality
+        document.querySelector('.search-bar input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const restaurantCards = document.querySelectorAll('.restaurant-card');
+            
+            restaurantCards.forEach(card => {
+                const name = card.querySelector('.restaurant-name').textContent.toLowerCase();
+                const cuisine = card.querySelector('.restaurant-cuisine').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || cuisine.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Location search
+        document.querySelector('.location-search button').addEventListener('click', function() {
+            const location = document.querySelector('.location-search input').value;
+            if (location.trim() !== '') {
+                alert(`Searching for restaurants in ${location}...`);
+                // In a real app, you would update the restaurant list based on location
+            }
+        });
+
+        // Filter items click
+        document.querySelectorAll('.filter-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const filterName = this.querySelector('.filter-name').textContent;
+                alert(`Filtering by: ${filterName}`);
+                // In a real app, you would filter restaurants based on the selected category
+            });
+        });
+
+        // Login/Signup buttons
+        document.querySelector('.btn-login').addEventListener('click', function() {
+            alert('Login functionality would be implemented with Firebase Auth');
+        });
+
+        document.querySelector('.btn-signup').addEventListener('click', function() {
+            alert('Signup functionality would be implemented with Firebase Auth');
+        });
+    </script>
+</body>
+</html>
